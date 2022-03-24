@@ -6,7 +6,7 @@ const compiledFactory = require('../ethereum/build/CampaignFactory.json');
 
 // console.log(compiledFactory.abi);
 
-const provider = new HDWalletProvider(``, ``);
+const provider = new HDWalletProvider();
 
 // local provider - replace for test provider
 // const ganacheProvider = ganache.provider();
@@ -22,7 +22,7 @@ const deploy = async () => {
     const result = await new web3.eth.Contract(compiledFactory.abi)
       .deploy({
         data: compiledFactory.evm.bytecode.object,
-        arguments: [1, 3600, 100],
+        arguments: [],
       })
       .send({ from: accounts[0], gas: 5000000, gasPrice: '30000000000' });
 

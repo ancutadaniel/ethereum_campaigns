@@ -20,13 +20,18 @@ beforeEach(async () => {
   factory = await new web3.eth.Contract(compiledFactory.abi)
     .deploy({
       data: compiledFactory.evm.bytecode.object,
-      arguments: [1, 3600, 100],
+      arguments: [],
     })
     .send({ from: accounts[0], gas: 5000000, gasPrice: '30000000000' });
 
+  // create a campaign
+  await factory.methods
+    .factoryCampaign(100, 3600, 100)
+    .send({ from: accounts[5], gas: 5000000, gasPrice: '30000000000' });
+
   // assign the first item of campaigns array
   [campaignAddress] = await factory.methods.getDeployedCampaigns().call();
-
+  console.log('test', campaignAddress);
   // create instance of the campaign - javaScript representation of the contract at campaignAddress
   // access contract that exist at this address
   // campaign will be the actual contract that we deal with
@@ -36,9 +41,9 @@ beforeEach(async () => {
 describe('CampaignFactory Contract', () => {
   it('deploys CampaignFactory & Campaign Contracts', () => {
     console.log('factory address :', factory.options.address);
-    console.log('campaign address :', campaign.options.address);
+    // console.log('campaign address :', campaign.options.address);
     assert.ok(factory.options.address);
-    assert.ok(campaign.options.address);
+    // assert.ok(campaign.options.address);
   });
 
   it('marks caller as the campaign manager', async () => {
@@ -48,7 +53,7 @@ describe('CampaignFactory Contract', () => {
   });
 
   it('allows people to contribute money and marks them as approvers', async () => {
-    await campaign.methods.contribute().send({ value: 10, from: accounts[1] });
+    await campaign.methods.contribute().send({ value: 101, from: accounts[1] });
     // access the mapping( !!! cannot retrieve entire mapping )
     const isContributor = await campaign.methods
       .participants(accounts[1])
@@ -59,7 +64,9 @@ describe('CampaignFactory Contract', () => {
 
   it('require minimum contributing', async () => {
     try {
-      await campaign.methods.contribute().send({ value: 1, from: accounts[1] });
+      await campaign.methods
+        .contribute()
+        .send({ value: 500, from: accounts[1] });
       assert(false);
     } catch (error) {
       assert(error);

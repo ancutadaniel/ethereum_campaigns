@@ -12,15 +12,14 @@ contract CampaignFactory {
     Campaign[] public campaignFactory;
 
     // add the owner of campaign
-    constructor(uint _min, uint _deadline, uint _goal) {
-        campaignCreator = msg.sender;
-        minimumContribution = _min;
-        deadline = block.timestamp + _deadline;
-        goal = _goal;
-        factoryCampaign();
+    constructor() {
+        campaignCreator = msg.sender;              
     }
 
-    function factoryCampaign () public {
+    function factoryCampaign (uint _min, uint _deadline, uint _goal ) public {
+        minimumContribution = _min;
+        deadline = block.timestamp + _deadline;
+        goal = _goal; 
         // create a varibable of campaign instance
         Campaign newCampaignAddress = new Campaign(minimumContribution, deadline, goal, campaignCreator);
         campaignFactory.push(newCampaignAddress);

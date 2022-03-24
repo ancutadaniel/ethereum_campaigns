@@ -17,7 +17,7 @@ const deployTest = async () => {
   factory = await new web3.eth.Contract(compiledFactory.abi)
     .deploy({
       data: compiledFactory.evm.bytecode.object,
-      arguments: [1, 3600, 100],
+      arguments: [],
     })
     .send(
       { from: accounts[0], gas: 5000000, gasPrice: '30000000000' },
