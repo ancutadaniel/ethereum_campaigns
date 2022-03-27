@@ -6,7 +6,7 @@ const compiledFactory = require('../ethereum/build/CampaignFactory.json');
 
 // console.log(compiledFactory.abi);
 
-const provider = new HDWalletProvider();
+const provider = new HDWalletProvider(``, ``);
 
 // local provider - replace for test provider
 // const ganacheProvider = ganache.provider();

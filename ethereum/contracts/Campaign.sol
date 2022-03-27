@@ -163,4 +163,13 @@ contract Campaign {
         participants[msg.sender] = 0;
     }
 
+    function getSummary() public view returns(uint, uint, uint, uint, address) {
+      return (
+        minimumContribution, 
+        getBalance(),
+        numberOfContributors,
+        numRequests,
+        manager
+      );
+    }
 }
